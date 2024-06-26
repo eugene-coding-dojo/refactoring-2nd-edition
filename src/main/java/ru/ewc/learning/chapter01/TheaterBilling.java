@@ -22,7 +22,7 @@ public class TheaterBilling {
         };
 
         for (Performance perf : invoice.performances()) {
-            int thisAmount = amountFor(playFor(perf), perf);
+            int thisAmount = amountFor(perf);
 
             // add volume credits
             volumeCredits += Math.max(perf.audience() - 30, 0);
@@ -46,9 +46,9 @@ public class TheaterBilling {
         return plays.get(perf.playID());
     }
 
-    private static int amountFor(Play play, Performance aPerformance) {
+    private int amountFor(Performance aPerformance) {
         int result = 0;
-        switch (play.type()) {
+        switch (playFor(aPerformance).type()) {
             case "tragedy":
                 result = 40000;
                 if (aPerformance.audience() > 30) {
@@ -63,7 +63,7 @@ public class TheaterBilling {
                 result += 300 * aPerformance.audience();
                 break;
             default:
-                throw new IllegalArgumentException("Unknown type: " + play.type());
+                throw new IllegalArgumentException("Unknown type: " + playFor(aPerformance).type());
         }
         return result;
     }
