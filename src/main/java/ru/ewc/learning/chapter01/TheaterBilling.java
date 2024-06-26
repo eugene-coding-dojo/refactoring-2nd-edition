@@ -23,25 +23,7 @@ public class TheaterBilling {
 
         for (Performance perf : invoice.performances()) {
             Play play = plays.get(perf.playID());
-            int thisAmount = 0;
-
-            switch (play.type()) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if (perf.audience() > 30) {
-                        thisAmount += 1000 * (perf.audience() - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = 30000;
-                    if (perf.audience() > 20) {
-                        thisAmount += 10000 + 500 * (perf.audience() - 20);
-                    }
-                    thisAmount += 300 * perf.audience();
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown type: " + play.type());
-            }
+            int thisAmount = amountFor(play, perf);
 
             // add volume credits
             volumeCredits += Math.max(perf.audience() - 30, 0);
@@ -59,6 +41,28 @@ public class TheaterBilling {
         result += "Amount owed is " + format.apply(totalAmount / 100) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
         return result;
+    }
+
+    private static int amountFor(Play play, Performance perf) {
+        int thisAmount = 0;
+        switch (play.type()) {
+            case "tragedy":
+                thisAmount = 40000;
+                if (perf.audience() > 30) {
+                    thisAmount += 1000 * (perf.audience() - 30);
+                }
+                break;
+            case "comedy":
+                thisAmount = 30000;
+                if (perf.audience() > 20) {
+                    thisAmount += 10000 + 500 * (perf.audience() - 20);
+                }
+                thisAmount += 300 * perf.audience();
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown type: " + play.type());
+        }
+        return thisAmount;
     }
 
     public record Invoice(String customer, Performance[] performances) {
