@@ -18,8 +18,6 @@ public class TheaterBilling {
         final NumberFormat nf = NumberFormat.getCurrencyInstance(locale);
 
         for (Performance perf : invoice.performances()) {
-            int thisAmount = amountFor(perf);
-
             // add volume credits
             volumeCredits += Math.max(perf.audience() - 30, 0);
             // add extra credit for every ten comedy attendees
@@ -28,9 +26,9 @@ public class TheaterBilling {
             }
 
             // print line for this order
-            result += "  " + playFor(perf).name() + ": " + nf.format(thisAmount / 100) + " (" + perf.audience() + " " +
+            result += "  " + playFor(perf).name() + ": " + nf.format(amountFor(perf) / 100) + " (" + perf.audience() + " " +
                       "seats)\n";
-            totalAmount += thisAmount;
+            totalAmount += amountFor(perf);
         }
 
         result += "Amount owed is " + nf.format(totalAmount / 100) + "\n";
