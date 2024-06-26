@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TheaterBillingTest {
     @Test
-    void bigCoCharacteriationTest() {
+    void bigCoCharacterizationTest() {
         TheaterBilling.Invoice invoice = new TheaterBilling.Invoice("BigCo", new TheaterBilling.Performance[]{
             new TheaterBilling.Performance("hamlet", 55),
             new TheaterBilling.Performance("as-like", 35),
