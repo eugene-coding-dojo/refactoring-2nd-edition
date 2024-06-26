@@ -22,18 +22,17 @@ public class TheaterBilling {
         };
 
         for (Performance perf : invoice.performances()) {
-            Play play = plays.get(perf.playID());
-            int thisAmount = amountFor(play, perf);
+            int thisAmount = amountFor(playFor(perf), perf);
 
             // add volume credits
             volumeCredits += Math.max(perf.audience() - 30, 0);
             // add extra credit for every ten comedy attendees
-            if ("comedy".equals(play.type())) {
+            if ("comedy".equals(playFor(perf).type())) {
                 volumeCredits += Math.floorDiv(perf.audience(), 5);
             }
 
             // print line for this order
-            result += "  " + play.name() + ": " + format.apply(thisAmount / 100) + " (" + perf.audience() + " " +
+            result += "  " + playFor(perf).name() + ": " + format.apply(thisAmount / 100) + " (" + perf.audience() + " " +
                       "seats)\n";
             totalAmount += thisAmount;
         }
@@ -41,6 +40,10 @@ public class TheaterBilling {
         result += "Amount owed is " + format.apply(totalAmount / 100) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
         return result;
+    }
+
+    private Play playFor(Performance perf) {
+        return plays.get(perf.playID());
     }
 
     private static int amountFor(Play play, Performance aPerformance) {
