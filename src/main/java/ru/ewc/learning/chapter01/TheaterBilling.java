@@ -35,11 +35,11 @@ public class TheaterBilling {
         return result;
     }
 
-    private int volumeCreditsFor(Performance perf) {
-        int result;
-        result = Math.max(perf.audience() - 30, 0);
-        if ("comedy".equals(playFor(perf).type())) {
-            result += Math.floorDiv(perf.audience(), 5);
+    private int volumeCreditsFor(Performance aPerformance) {
+        int result = 0;
+        result = Math.max(aPerformance.audience() - 30, 0);
+        if ("comedy".equals(playFor(aPerformance).type())) {
+            result += Math.floorDiv(aPerformance.audience(), 5);
         }
         return result;
     }
